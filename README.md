@@ -14,14 +14,16 @@ Summary: Interface for querying installed libraries for use during compilation.
 Current build status
 ====================
 
-Linux: [![Circle CI](https://circleci.com/gh/conda-forge/pkg-config-feedstock.svg?style=shield)](https://circleci.com/gh/conda-forge/pkg-config-feedstock)
-OSX: [![TravisCI](https://travis-ci.org/conda-forge/pkg-config-feedstock.svg?branch=master)](https://travis-ci.org/conda-forge/pkg-config-feedstock)
-Windows: ![](https://cdn.rawgit.com/conda-forge/conda-smithy/90845bba35bec53edac7a16638aa4d77217a3713/conda_smithy/static/disabled.svg)
+[![Linux](https://img.shields.io/circleci/project/github/conda-forge/pkg-config-feedstock/master.svg?label=Linux)](https://circleci.com/gh/conda-forge/pkg-config-feedstock)
+[![OSX](https://img.shields.io/travis/conda-forge/pkg-config-feedstock/master.svg?label=macOS)](https://travis-ci.org/conda-forge/pkg-config-feedstock)
+![Windows disabled](https://img.shields.io/badge/Windows-disabled-lightgrey.svg)
 
 Current release info
 ====================
-Version: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/pkg-config/badges/version.svg)](https://anaconda.org/conda-forge/pkg-config)
-Downloads: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/pkg-config/badges/downloads.svg)](https://anaconda.org/conda-forge/pkg-config)
+
+| Name | Downloads | Version | Platforms |
+| --- | --- | --- | --- |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-pkg--config-green.svg)](https://anaconda.org/conda-forge/pkg-config) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pkg-config.svg)](https://anaconda.org/conda-forge/pkg-config) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/pkg-config.svg)](https://anaconda.org/conda-forge/pkg-config) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/pkg-config.svg)](https://anaconda.org/conda-forge/pkg-config) |
 
 Installing pkg-config
 =====================
