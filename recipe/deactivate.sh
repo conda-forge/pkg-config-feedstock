@@ -1,0 +1,6 @@
+if [[ ! -z "${_CONDA_SAVE_PKG_CONFIG_PATH}" ]]; then
+  export PKG_CONFIG_PATH="${_CONDA_SAVE_PKG_CONFIG_PATH}"
+  unset _CONDA_SAVE_PKG_CONFIG_PATH
+else
+  unset PKG_CONFIG_PATH
+fi
