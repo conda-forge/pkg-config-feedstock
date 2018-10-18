@@ -19,6 +19,8 @@ requirements:
     - automake
   host:
     - libiconv  # [osx]
+  run:
+    - libiconv  # [osx]
 
 test:
   commands:
