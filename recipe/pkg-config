@@ -38,12 +38,12 @@ function _run_pkg_config() {
       SRLIBDIR=lib
     fi
     if [[ ${CONDA_BUILD_PKG_CONFIG_LOG} == yes ]]; then
-      echo "Calling: PKG_CONFIG_LIBDIR=${PC_PATH_HOST}:$(${CC} -print-sysroot)/usr/share/pkgconfig:$(${CC} -print-sysroot)/usr/${SRLIBDIR}/pkgconfig \
+      echo "Calling: PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR}:${PC_PATH_HOST}:$(${CC} -print-sysroot)/usr/share/pkgconfig:$(${CC} -print-sysroot)/usr/${SRLIBDIR}/pkgconfig \
         ${PC_PREFIX}/bin/pkg-config.bin --define-prefix --debug "$@" > /tmp/pkg-config-$$.log"
-      PKG_CONFIG_LIBDIR="${PC_PATH_HOST}":"$(${CC} -print-sysroot)/usr/share/pkgconfig:$(${CC} -print-sysroot)/usr/${SRLIBDIR}/pkgconfig" \
+      PKG_CONFIG_LIBDIR="${PKG_CONFIG_LIBDIR}:${PC_PATH_HOST}":"$(${CC} -print-sysroot)/usr/share/pkgconfig:$(${CC} -print-sysroot)/usr/${SRLIBDIR}/pkgconfig" \
         ${PC_PREFIX}/bin/pkg-config.bin --define-prefix --debug "$@" >> /tmp/pkg-config-$$.log 2>&1 || true
     fi
-    PKG_CONFIG_LIBDIR="${PC_PATH_HOST}":"$(${CC} -print-sysroot)/usr/share/pkgconfig:$(${CC} -print-sysroot)/usr/${SRLIBDIR}/pkgconfig" \
+    PKG_CONFIG_LIBDIR="${PKG_CONFIG_LIBDIR}:${PC_PATH_HOST}":"$(${CC} -print-sysroot)/usr/share/pkgconfig:$(${CC} -print-sysroot)/usr/${SRLIBDIR}/pkgconfig" \
       ${PC_PREFIX}/bin/pkg-config.bin --define-prefix "$@"
   else
     # We might need --define-prefix here sometimes, but would be better off ensuring /usr is replaced by ${prefix}
@@ -57,12 +57,12 @@ function _run_pkg_config() {
 
     PC_PATH_SYSROOT=${PC_PATH_BUILD//$PC_PREFIX//usr$CONDA_BUILD_SYSROOT}:/usr/${SRLIBDIR}/pkgconfig
     if [[ ${CONDA_BUILD_PKG_CONFIG_LOG} == yes ]]; then
-      echo "Calling: PKG_CONFIG_LIBDIR=${PC_PATH_HOST}:${PC_PATH_SYSROOT} \
+      echo "Calling: PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR}:${PC_PATH_HOST}:${PC_PATH_SYSROOT} \
         ${PC_PREFIX}/bin/pkg-config.bin --define-prefix --debug $@ > /tmp/pkg-config-$$.log"
-      PKG_CONFIG_LIBDIR="${PC_PATH_HOST}:${PC_PATH_SYSROOT}" \
+      PKG_CONFIG_LIBDIR="${PKG_CONFIG_LIBDIR}:${PC_PATH_HOST}:${PC_PATH_SYSROOT}" \
         ${PC_PREFIX}/bin/pkg-config.bin --define-prefix --debug "$@" >> /tmp/pkg-config-$$.log 2>&1 || true
     fi
-    PKG_CONFIG_LIBDIR="${PC_PATH_HOST}:${PC_PATH_SYSROOT}" \
+    PKG_CONFIG_LIBDIR="${PKG_CONFIG_LIBDIR}:${PC_PATH_HOST}:${PC_PATH_SYSROOT}" \
       ${PC_PREFIX}/bin/pkg-config.bin --define-prefix "$@"
   fi
 }
