@@ -15,6 +15,7 @@ build:
 
 requirements:
   build:
+    - libtool  # [unix]
     - {{ compiler('c') }}
     - automake  # [unix]
     - make  # [unix]
