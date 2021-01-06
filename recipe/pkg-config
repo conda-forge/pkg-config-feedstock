@@ -40,24 +40,32 @@ function _run_pkg_config() {
       SRLIBDIR64=
     fi
     if [[ ${CONDA_BUILD_PKG_CONFIG_LOG} == yes ]]; then
-      echo "Calling: PKG_CONFIG_LIBDIR=${PC_PATH_HOST}:$(${CC} -print-sysroot)/usr/share/pkgconfig${SRLIBDIR}${SRLIBDIR64} \
+      echo "Calling: PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR}:${PC_PATH_HOST}:$(${CC} -print-sysroot)/usr/share/pkgconfig${SRLIBDIR}${SRLIBDIR64} \
         ${PC_PREFIX}/bin/pkg-config.bin --define-prefix --debug "$@" > /tmp/pkg-config-$$.log"
-      PKG_CONFIG_LIBDIR="${PC_PATH_HOST}":"$(${CC} -print-sysroot)/usr/share/pkgconfig${SRLIBDIR}${SRLIBDIR64}" \
+      PKG_CONFIG_LIBDIR="${PKG_CONFIG_LIBDIR}:${PC_PATH_HOST}":"$(${CC} -print-sysroot)/usr/share/pkgconfig${SRLIBDIR}${SRLIBDIR64}" \
         ${PC_PREFIX}/bin/pkg-config.bin --define-prefix --debug "$@" >> /tmp/pkg-config-$$.log 2>&1 || true
     fi
-    PKG_CONFIG_LIBDIR="${PC_PATH_HOST}":"$(${CC} -print-sysroot)/usr/share/pkgconfig${SRLIBDIR}${SRLIBDIR64}" \
+    PKG_CONFIG_LIBDIR="${PKG_CONFIG_LIBDIR}:${PC_PATH_HOST}":"$(${CC} -print-sysroot)/usr/share/pkgconfig${SRLIBDIR}${SRLIBDIR64}" \
       ${PC_PREFIX}/bin/pkg-config.bin --define-prefix "$@"
   else
     # We might need --define-prefix here sometimes, but would be better off ensuring /usr is replaced by ${prefix}
     # in all source .pc files in our packages. TODO :: Make conda-build / conda-verify detect this.
-    PC_PATH_SYSROOT=${PC_PATH_BUILD//$PC_PREFIX//usr$CONDA_BUILD_SYSROOT}
+    # try to determine additionnals /lib arch dir. On 64bits systems, it should be /lib and /lib64, on 32bits it should be /lib and /lib32
+    SRLIBDIR=":/usr/lib/pkgconfig:/usr/share/pkgconfig"
+    if [[ ${HOSTTYPE} == "" ]]; then
+       SRLIBDIRARCH=":/usr/lib$(uname -m | sed 's/x86_//;s/i[3-6]86/32/')/pkgconfig"
+    else
+       SRLIBDIRARCH=":/usr/lib$(echo ${HOSTTYPE} | sed 's/x86_//;s/i[3-6]86/32/')/pkgconfig"
+    fi
+
+    PC_PATH_SYSROOT=${PC_PATH_BUILD//$PC_PREFIX//usr$CONDA_BUILD_SYSROOT}${SRLIBDIRARCH}${SRLIBDIR}
     if [[ ${CONDA_BUILD_PKG_CONFIG_LOG} == yes ]]; then
-      echo "Calling: PKG_CONFIG_LIBDIR=${PC_PATH_HOST}:${PC_PATH_SYSROOT} \
+      echo "Calling: PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR}:${PC_PATH_HOST}:${PC_PATH_SYSROOT} \
         ${PC_PREFIX}/bin/pkg-config.bin --define-prefix --debug $@ > /tmp/pkg-config-$$.log"
-      PKG_CONFIG_LIBDIR="${PC_PATH_HOST}:${PC_PATH_SYSROOT}" \
+      PKG_CONFIG_LIBDIR="${PKG_CONFIG_LIBDIR}:${PC_PATH_HOST}:${PC_PATH_SYSROOT}" \
         ${PC_PREFIX}/bin/pkg-config.bin --define-prefix --debug "$@" >> /tmp/pkg-config-$$.log 2>&1 || true
     fi
-    PKG_CONFIG_LIBDIR="${PC_PATH_HOST}:${PC_PATH_SYSROOT}" \
+    PKG_CONFIG_LIBDIR="${PKG_CONFIG_LIBDIR}:${PC_PATH_HOST}:${PC_PATH_SYSROOT}" \
       ${PC_PREFIX}/bin/pkg-config.bin --define-prefix "$@"
   fi
 }
