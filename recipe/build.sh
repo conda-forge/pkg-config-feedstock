@@ -5,6 +5,10 @@ cp $BUILD_PREFIX/share/libtool/build-aux/config.* .
 
 mkdir -p ${PREFIX}/include
 
+if [[ "$target_platform" == "osx-64" ]]; then
+  export CFLAGS="${CFLAGS} -Wno-int-conversion"
+fi
+
 if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
   export GLIB_CFLAGS="-I${PREFIX}/include/glib-2.0 -I${PREFIX}/lib/glib-2.0/include"
   export GLIB_LIBS="-L${PREFIX}/lib -lglib-2.0"
