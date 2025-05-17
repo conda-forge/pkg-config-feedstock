@@ -16,7 +16,6 @@ Documentation: https://people.freedesktop.org/~dbn/pkg-config-guide.html
 pkg-config is a script to make putting together all the build
 flags when compiling/linking a lot easier.
 
-
 Current build status
 ====================
 
