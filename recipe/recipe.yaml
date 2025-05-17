@@ -26,6 +26,7 @@ requirements:
       - libtool
       - automake 1.15.*
       - make
+      - python >=2.5
   host:
     # To avoid a cyclic dependency when building, we avoid glib when not cross-compiling
     # This assumes that both pkg-config and glib are cross-compiled or neither is
