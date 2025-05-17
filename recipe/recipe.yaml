@@ -24,7 +24,7 @@ requirements:
     - if: unix
       then:
       - libtool
-      - automake
+      - automake 1.15.*
       - make
   host:
     # To avoid a cyclic dependency when building, we avoid glib when not cross-compiling
