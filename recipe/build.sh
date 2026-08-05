@@ -5,7 +5,7 @@ cp $BUILD_PREFIX/share/libtool/build-aux/config.* .
 
 mkdir -p ${PREFIX}/include
 
-if [[ "$target_platform" == "osx-64" ]]; then
+if [[ "$target_platform" == osx-* ]]; then
   export CFLAGS="${CFLAGS} -Wno-int-conversion"
 fi
 
