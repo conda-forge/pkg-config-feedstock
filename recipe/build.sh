@@ -9,7 +9,7 @@ if [[ "$target_platform" == osx-* ]]; then
   export CFLAGS="${CFLAGS} -Wno-int-conversion"
 fi
 
-if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" ]]; then
+if [[ "$CONDA_BUILD_CROSS_COMPILATION" == "1" && "$target_platform" != "linux-riscv64" ]]; then
   export GLIB_CFLAGS="-I${PREFIX}/include/glib-2.0 -I${PREFIX}/lib/glib-2.0/include"
   export GLIB_LIBS="-L${PREFIX}/lib -lglib-2.0"
   ./configure --prefix=${PREFIX}    \
