@@ -5,6 +5,11 @@ cp $BUILD_PREFIX/share/libtool/build-aux/config.* .
 
 mkdir -p ${PREFIX}/include
 
+if [[ "$target_platform" == linux-* ]]; then
+  # pkg-config sources are not ready for C23 yet (e.g. use of C23-keyword `bool` as variable name)
+  export CFLAGS="${CFLAGS} -std=gnu17"
+fi
+
 if [[ "$target_platform" == osx-* ]]; then
   export CFLAGS="${CFLAGS} -Wno-int-conversion"
 fi
