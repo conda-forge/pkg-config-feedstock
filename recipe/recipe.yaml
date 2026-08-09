@@ -1,48 +1,53 @@
-{% set version = "0.29.2" %}
+context:
+  version: 0.29.2
 
 package:
   name: pkg-config
-  version: {{ version }}
+  version: ${{ version }}
 
 source:
-  url: https://pkg-config.freedesktop.org/releases/pkg-config-{{ version }}.tar.gz
+  url: https://pkg-config.freedesktop.org/releases/pkg-config-${{ version }}.tar.gz
   sha256: 6fc69c01688c9458a57eb9a1664c9aba372ccda420a02bf4429fe610e7e7d591
 
 build:
-  number: 1010
-  detect_binary_files_with_prefix: True
+  number: 1011
+  script: build
 
 requirements:
   build:
-    - libtool  # [unix]
-    - {{ compiler('c') }}
-    - {{ stdlib('c') }}
-    - automake  # [unix]
-    - make  # [unix]
+    - ${{ compiler('c') }}
+    - ${{ stdlib('c') }}
+    - if: unix
+      then:
+        - libtool
+        - automake
+        - make
+        - python
   host:
-    # To avoid a cyclic dependency when building, we avoid glib when not cross-compiling
-    # This assumes that both pkg-config and glib are cross-compiled or neither is
-    - glib      # [(build_platform != target_platform) and not riscv64]
-    # for win, we always want it
-    - glib      # [win]
-    - libiconv  # [osx]
+    # To avoid a cyclic dependency when bootstrapping linux-riscv64, use the
+    # bundled GLib there. Other cross builds and all Windows builds use GLib.
+    - if: win or (build_platform != target_platform and not riscv64)
+      then: glib
+    - if: osx
+      then: libiconv
 
-test:
-  commands:
-    - pkg-config --help
+tests:
+  - package_contents:
+      bin:
+        - pkg-config
+  - script:
+      - pkg-config --help
 
 about:
-  home: http://www.freedesktop.org/wiki/Software/pkg-config/
+  homepage: http://www.freedesktop.org/wiki/Software/pkg-config/
   license: GPL-2.0-or-later
   license_file: COPYING
   summary: Interface for querying installed libraries for use during compilation.
-
   description: |
     pkg-config is a script to make putting together all the build
     flags when compiling/linking a lot easier.
-  doc_url: https://people.freedesktop.org/~dbn/pkg-config-guide.html
-  dev_url: https://cgit.freedesktop.org/pkg-config
-  doc_source_url:
+  documentation: https://people.freedesktop.org/~dbn/pkg-config-guide.html
+  repository: https://cgit.freedesktop.org/pkg-config
 
 extra:
   recipe-maintainers:
