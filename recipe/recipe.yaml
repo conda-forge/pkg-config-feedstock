@@ -12,6 +12,9 @@ source:
 build:
   number: 1011
   script: build
+  variant:
+    ignore_keys:
+      - python
 
 requirements:
   build:
