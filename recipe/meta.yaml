@@ -9,8 +9,7 @@ source:
   sha256: 6fc69c01688c9458a57eb9a1664c9aba372ccda420a02bf4429fe610e7e7d591
 
 build:
-  number: 1009
-  skip: True  # [win and vc<14]
+  number: 1010
   detect_binary_files_with_prefix: True
 
 requirements:
@@ -23,7 +22,9 @@ requirements:
   host:
     # To avoid a cyclic dependency when building, we avoid glib when not cross-compiling
     # This assumes that both pkg-config and glib are cross-compiled or neither is
-    - glib  # [win or (build_platform != target_platform)]
+    - glib      # [(build_platform != target_platform) and not riscv64]
+    # for win, we always want it
+    - glib      # [win]
     - libiconv  # [osx]
 
 test:
@@ -49,4 +50,4 @@ extra:
     - mdboom
     - ocefpaf
     - tacaswell
-    - mingwandroid
+    - h-vetinari
