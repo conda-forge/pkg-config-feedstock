@@ -10,7 +10,7 @@ source:
   sha256: 6fc69c01688c9458a57eb9a1664c9aba372ccda420a02bf4429fe610e7e7d591
 
 build:
-  number: 1011
+  number: 1012
   script: build
   variant:
     ignore_keys:
@@ -27,9 +27,10 @@ requirements:
         - make
         - python
   host:
-    # To avoid a cyclic dependency when bootstrapping linux-riscv64, use the
-    # bundled GLib there. Other cross builds and all Windows builds use GLib.
-    - if: win or (build_platform != target_platform and not riscv64)
+    # To avoid a cyclic dependency when building, we avoid glib when not cross-compiling.
+    # This assumes that both pkg-config and glib are cross-compiled or neither is.
+    # Windows does not participate in these games though, we always want glib there
+    - if: win or (build_platform != target_platform)
       then: glib
     - if: osx
       then: libiconv
