@@ -10,7 +10,7 @@ source:
   sha256: 6fc69c01688c9458a57eb9a1664c9aba372ccda420a02bf4429fe610e7e7d591
 
 build:
-  number: 1012
+  number: 1013
   script: build
   variant:
     ignore_keys:
@@ -41,6 +41,10 @@ tests:
         - pkg-config
   - script:
       - pkg-config --help
+      - pkg-config --modversion glib-2.0
+    requirements:
+      run:
+        - glib-tools
 
 about:
   homepage: http://www.freedesktop.org/wiki/Software/pkg-config/
